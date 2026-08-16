@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 //Route Pengguna yang belum login
@@ -16,7 +17,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])
         ->name('login.process');
 });
-
 //Login Route
 
 Route::middleware('auth')->group(function () {
@@ -79,6 +79,16 @@ Route::middleware('auth')->group(function () {
         '/peminjaman/{loan}/kembalikan',
         [LoanController::class, 'returnBook']
     )->name('loans.return');
+
+    // Laporan Route
+    Route::get('/laporan', [ReportController::class, 'index'])
+    ->name('reports.index');
+
+    Route::get('/laporan', [ReportController::class, 'index'])
+    ->name('reports.index');
+    
+    Route::get('/laporan/pdf', [ReportController::class, 'pdf'])
+    ->name('reports.pdf');
 
 // Logout Route
     Route::post('/logout', [AuthController::class, 'logout'])

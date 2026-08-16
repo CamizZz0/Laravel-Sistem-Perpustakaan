@@ -11,7 +11,7 @@
 
 <body class="min-h-screen bg-slate-100">
     <header class="border-b border-slate-200 bg-white shadow-sm">
-        <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <a
                 href="{{ route('home') }}"
                 class="text-xl font-bold text-blue-600"
@@ -55,27 +55,37 @@
                 >
                     Peminjaman
                 </a>
-                <div class="flex items-center gap-3 border-l border-slate-200 pl-6">
-    <span class="text-sm text-slate-600">
-        {{ auth()->user()?->name }}
-    </span>
 
-    @auth
-        <form
-            action="{{ route('logout') }}"
-            method="POST"
-        >
-            @csrf
+                <a
+                    href="{{ route('reports.index') }}"
+                    class="{{ request()->routeIs('reports.*')
+                        ? 'font-semibold text-blue-600'
+                        : 'text-slate-600 hover:text-blue-600' }}"
+                >
+                    Laporan
+                </a>
 
-            <button
-                type="submit"
-                class="text-sm font-semibold text-red-600 hover:text-red-700"
-            >
-                Keluar
-            </button>
-        </form>
-    @endauth
-</div>
+                @auth
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-6">
+                        <span class="text-sm text-slate-600">
+                            {{ auth()->user()->name }}
+                        </span>
+
+                        <form
+                            action="{{ route('logout') }}"
+                            method="POST"
+                        >
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="text-sm font-semibold text-red-600 hover:text-red-700"
+                            >
+                                Keluar
+                            </button>
+                        </form>
+                    </div>
+                @endauth
             </div>
         </nav>
     </header>
