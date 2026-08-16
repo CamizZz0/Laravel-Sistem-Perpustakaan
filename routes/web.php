@@ -4,10 +4,11 @@ use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [DashboardController::class, 'index'])
+    ->name('home');
 
 Route::get('/buku', [BookController::class, 'index'])
     ->name('books.index');
@@ -48,6 +49,7 @@ Route::delete('/anggota/{member}', [MemberController::class, 'destroy'])
     ->name('members.destroy');
 
 //Loan routes
+
 Route::get('/peminjaman', [LoanController::class, 'index'])
     ->name('loans.index');
 
@@ -61,3 +63,16 @@ Route::patch(
     '/peminjaman/{loan}/kembalikan',
     [LoanController::class, 'returnBook']
 )->name('loans.return');
+
+//Auth routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])
+        ->name('login');
+
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('login.process');
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');

@@ -37,7 +37,7 @@
                 >
                     Buku
                 </a>
-                
+
                 <a
                     href="{{ route('members.index') }}"
                     class="{{ request()->routeIs('members.*')
@@ -55,6 +55,27 @@
                 >
                     Peminjaman
                 </a>
+                <div class="flex items-center gap-3 border-l border-slate-200 pl-6">
+    <span class="text-sm text-slate-600">
+        {{ auth()->user()?->name }}
+    </span>
+
+    @auth
+        <form
+            action="{{ route('logout') }}"
+            method="POST"
+        >
+            @csrf
+
+            <button
+                type="submit"
+                class="text-sm font-semibold text-red-600 hover:text-red-700"
+            >
+                Keluar
+            </button>
+        </form>
+    @endauth
+</div>
             </div>
         </nav>
     </header>
