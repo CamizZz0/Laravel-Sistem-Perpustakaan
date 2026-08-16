@@ -37,6 +37,24 @@
                 >
                     Buku
                 </a>
+                
+                <a
+                    href="{{ route('members.index') }}"
+                    class="{{ request()->routeIs('members.*')
+                        ? 'font-semibold text-blue-600'
+                        : 'text-slate-600 hover:text-blue-600' }}"
+                >
+                    Anggota
+                </a>
+
+                <a
+                    href="{{ route('loans.index') }}"
+                    class="{{ request()->routeIs('loans.*')
+                        ? 'font-semibold text-blue-600'
+                        : 'text-slate-600 hover:text-blue-600' }}"
+                >
+                    Peminjaman
+                </a>
             </div>
         </nav>
     </header>

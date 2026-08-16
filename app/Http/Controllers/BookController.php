@@ -8,12 +8,24 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
-    public function index()
-    {
-        $books = Book::latest()->get();
+    public function index(Request $request)
+{
+    $search = $request->input('search');
 
-        return view('books.index', compact('books'));
-    }
+    $books = Book::query()
+        ->when($search, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('author', 'like', "%{$search}%")
+                    ->orWhere('isbn', 'like', "%{$search}%");
+            });
+        })
+        ->latest()
+        ->paginate(5)
+        ->withQueryString();
+
+    return view('books.index', compact('books', 'search'));
+}
     
     public function create()
 {

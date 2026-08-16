@@ -29,6 +29,36 @@
             </div>
         @endif
 
+        <form
+    action="{{ route('books.index') }}"
+    method="GET"
+    class="mt-6 flex gap-3"
+>
+    <input
+        type="text"
+        name="search"
+        value="{{ $search }}"
+        placeholder="Cari judul, penulis, atau ISBN..."
+        class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500"
+    >
+
+    <button
+        type="submit"
+        class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+    >
+        Cari
+    </button>
+
+    @if ($search)
+        <a
+            href="{{ route('books.index') }}"
+            class="rounded-lg bg-slate-500 px-6 py-3 font-semibold text-white hover:bg-slate-600"
+        >
+            Reset
+        </a>
+    @endif
+</form>
+
         <div class="mt-8 overflow-x-auto rounded-xl bg-white shadow">
             <table class="w-full text-left">
                 <thead class="bg-blue-600 text-white">
@@ -46,7 +76,7 @@
                     @forelse ($books as $book)
                         <tr class="border-b border-slate-200 hover:bg-slate-50">
                             <td class="px-6 py-4 text-slate-600">
-                                {{ $loop->iteration }}
+                                {{ $books->firstItem() + $loop->index }}
                             </td>
 
                             <td class="px-6 py-4 font-semibold text-slate-900">
@@ -98,18 +128,27 @@
                                         </button>
                                     </form>
                                 </div>
+                                @if ($books->hasPages())
+    <div class="mt-6">
+        {{ $books->links() }}
+    </div>
+@endif
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td
-                                colspan="6"
-                                class="px-6 py-12 text-center text-slate-500"
-                            >
-                                Belum ada buku yang tersimpan.
-                            </td>
-                        </tr>
-                    @endforelse
+                        @empty
+    <tr>
+        <td
+            colspan="6"
+            class="px-6 py-12 text-center text-slate-500"
+        >
+            @if ($search)
+                Buku dengan kata kunci “{{ $search }}” tidak ditemukan.
+            @else
+                Belum ada buku yang tersimpan.
+            @endif
+        </td>
+    </tr>
+@endforelse
                 </tbody>
             </table>
         </div>
