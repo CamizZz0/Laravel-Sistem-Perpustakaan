@@ -28,6 +28,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('error'))
+            <div class="mt-6 rounded-lg border border-red-200 bg-red-100 px-5 py-4 text-red-700">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <form
     action="{{ route('books.index') }}"

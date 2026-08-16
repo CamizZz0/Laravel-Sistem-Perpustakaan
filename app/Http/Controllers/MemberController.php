@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -92,10 +93,19 @@ public function update(Request $request, Member $member)
 
 public function destroy(Member $member)
 {
+    $hasLoanHistory = Loan::where('member_id', $member->id)->exists();
+
+    if ($hasLoanHistory) {
+        return redirect()
+            ->route('members.index')
+            ->with('error', 'Anggota tidak dapat dihapus karena sudah memiliki riwayat peminjaman.');
+    }
+
     $member->delete();
 
     return redirect()
         ->route('members.index')
         ->with('success', 'Anggota berhasil dihapus.');
 }
+
 }

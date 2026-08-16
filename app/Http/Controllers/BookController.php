@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\Loan;
 
 class BookController extends Controller
 {
@@ -76,6 +77,14 @@ public function update(Request $request, Book $book)
 
 public function destroy(Book $book)
 {
+    $hasLoanHistory = Loan::where('book_id', $book->id)->exists();
+
+    if ($hasLoanHistory) {
+        return redirect()
+            ->route('books.index')
+            ->with('error', 'Buku tidak dapat dihapus karena sudah memiliki riwayat peminjaman.');
+    }
+
     $book->delete();
 
     return redirect()
